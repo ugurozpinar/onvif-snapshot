@@ -6,7 +6,7 @@ var cron = require('node-cron');
 
 mkdirp.sync('snaps');
  
- var nvrs = [{host:'192.168.3.220',title:'220'},{host:'192.168.3.221',title:'221'}];
+ var nvrs = [{host:'192.168.3.220',title:'220',max:64},{host:'192.168.3.221',title:'221',max:32}];
 
 var cams = [];
 var datetitle = timeStamp();
@@ -40,7 +40,7 @@ function cek(){
 	/// TEST
 
 	for(var i=0;i<nvrs.length;i++){
-		for(var j=1;j<50;j++){
+		for(var j=1;j<=nvrs[i].max;j++){
 			cams.push({
 				nvr : nvrs[i].host,
 				datetitle : datetitle,
