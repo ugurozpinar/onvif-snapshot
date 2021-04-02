@@ -6,7 +6,7 @@ var cron = require('node-cron');
 
 mkdirp.sync('snaps');
  
- var nvrs = [{host:'192.168.3.220',title:'220',max:64},{host:'192.168.3.221',title:'221',max:32}];
+ var nvrs = [{host:'192.168.3.220',title:'220',max:64},{host:'192.168.3.221',title:'221',max:40}];
 
 var cams = [];
 var datetitle = timeStamp();
@@ -64,10 +64,16 @@ function al(){
 	}else
 		console.log(cams.length +' : '+cams[cams.length-1].id);
 	
+	
+	
 	var kanal = cams.pop();
 	
-	var writeStream = fs.createWriteStream(path.join('snaps',kanal.id+'_#_'+kanal.datetitle+'.jpg'));
-	let snapshotUri = "http://"+kanal.nvr+"/cgi-bin/snapshot.cgi?channel="+kanal.channel+"&loginuse=admin&loginpas=password";
+	var saveDir = 'snaps'+'/'+timeStampJustDate();
+	if (!fs.existsSync(saveDir))
+		fs.mkdirSync(saveDir);
+	
+	var writeStream = fs.createWriteStream(path.join(saveDir,kanal.id+'_#_'+kanal.datetitle+'.jpg'));
+	let snapshotUri = "http://"+kanal.nvr+"/cgi-bin/snapshot.cgi?channel="+kanal.channel+"&loginuse=admin&loginpas=oz5527431";
 	request({
 		method: 'GET',
 		uri: snapshotUri,
@@ -76,7 +82,7 @@ function al(){
 		//encoding: 'binary',
 		auth: {
 			user: "admin",
-			pass: "password",
+			pass: "oz5527431",
 			sendImmediately: false
 		}
 	})
@@ -107,6 +113,11 @@ function timeStamp() {
 // Create a date object with the current time
   var now = new Date();
   return now.getFullYear()+"-"+addZeroBefore(now.getMonth()+1)+"-"+addZeroBefore(now.getDate())+" "+addZeroBefore(now.getHours())+'_'+addZeroBefore(now.getMinutes());
+}
+function timeStampJustDate() {
+// Create a date object with the current time
+  var now = new Date();
+  return now.getFullYear()+"-"+addZeroBefore(now.getMonth()+1)+"-"+addZeroBefore(now.getDate());
 }
 
 function addZeroBefore(n) {
