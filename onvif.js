@@ -3,8 +3,9 @@ var fs = require('fs');
 const mkdirp = require('mkdirp');
 const path = require('path');
 var cron = require('node-cron');
+const { exec } = require("child_process");
 
-mkdirp.sync('snaps');
+mkdirp.sync('/mnt/QNAP');
  
  var nvrs = [{host:'192.168.3.220',title:'220',max:64},{host:'192.168.3.221',title:'221',max:40}];
 
@@ -15,8 +16,21 @@ var datetitle = timeStamp();
 	
 //});
 
+//NAS'a BAGLAN
+//------------------
+exec("mount -t cifs -o username=admin,password=5ozyurt //172.16.3.1/Snaps /mnt/QNAP", (error, stdout, stderr) => {
+if (error) {
+	console.log(`error: ${error.message}`);
+	return;
+}
+if (stderr) {
+	console.log(`stderr: ${stderr}`);
+	return;
+}
+console.log(`stdout: ${stdout}`);
+});
+//------------------
 
-	
 return cek();
 
 
@@ -53,11 +67,28 @@ function cek(){
 }
 
 
+function kucukDosyalariTemizle(saveDir){
+	
 
+	exec("find "+saveDir+"/ -name \"*.jpg\" -type 'f' -size -20k -delete", (error, stdout, stderr) => {
+		if (error) {
+			console.log(`error: ${error.message}`);
+			return;
+		}
+		if (stderr) {
+			console.log(`stderr: ${stderr}`);
+			return;
+		}
+		console.log(`stdout: ${stdout}`);
+	});
 
+}
 
 function al(){
+	var saveDir = '/mnt/QNAP'+'/'+timeStampJustDate();
+	
 	if(cams.length == 0){
+		kucukDosyalariTemizle(saveDir);
 		console.log('Komple Bitti 300 Saniye Sonra Başlayacak : '+timeStamp());
 		return setTimeout(cek,1000*1200);
 		return false;
@@ -68,7 +99,7 @@ function al(){
 	
 	var kanal = cams.pop();
 	
-	var saveDir = 'snaps'+'/'+timeStampJustDate();
+	
 	if (!fs.existsSync(saveDir))
 		fs.mkdirSync(saveDir);
 	
