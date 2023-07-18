@@ -48,10 +48,10 @@ Once the snapshot is saved, the al() function is called again to capture the nex
 If there are no more cameras to capture snapshots from, the kucukDosyalariTemizle() function is called to delete small-sized files in the saveDir. Finally, the script waits for 20 minutes before starting the capture process again.
 
 ## Customization
-NVR Configuration: Modify the **nvrs** array to include your NVRs' IP addresses, titles, and maximum channel numbers.
-File Directory: Change the **saveDir** variable to specify the directory path where the captured snapshots should be stored.
-Authentication: Modify the username and password in the snapshot URL (**snapshotUri**) to match your NVR's authentication credentials.
-Please note that this script assumes a Linux environment and includes a command to mount a network-attached storage (NAS) device. Adjust this section according to your specific requirements if running on a different operating system.
+* NVR Configuration: Modify the **nvrs** array to include your NVRs' IP addresses, titles, and maximum channel numbers.
+* File Directory: Change the **saveDir** variable to specify the directory path where the captured snapshots should be stored.
+* Authentication: Modify the username and password in the snapshot URL (**snapshotUri**) to match your NVR's authentication credentials.
+* Please note that this script assumes a Linux environment and includes a command to mount a network-attached storage (NAS) device. Adjust this section according to your specific requirements if running on a different operating system.
 
 ## Schedule
 By default, the script is commented out for scheduling using **cron**. If you want to enable automatic periodic execution of the script, uncomment the relevant lines and specify the desired schedule using the **cron.schedule()** function.
